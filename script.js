@@ -1,11 +1,14 @@
-// GUI Elements
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 const toggleIcon = document.getElementById('toggle-icon');
 const nav = document.getElementById('nav');
 const textBox = document.getElementById('text-box');
 const imageElements = document.querySelectorAll('.about-container img');
 
-// Color constants for dark and light mode
+const THEME = {
+  DARK: 'dark',
+  LIGHT: 'light'
+};
+
 const BG_COLORS = {
   dark: {
     navBg: 'rgb(0 0 0 / 50%)',
@@ -23,32 +26,33 @@ function updateImageMode(theme) {
   });
 }
 
-function applyThemeSettings({isDark = false}) {
-  const theme = isDark ? 'dark' : 'light';
+function applyThemeSettings(isDarkMode = false) {
+  const theme = isDarkMode ? THEME.DARK : THEME.LIGHT;
   nav.style.backgroundColor = BG_COLORS[theme].navBg;
   textBox.style.backgroundColor = BG_COLORS[theme].textBoxBg;
-  toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
-  toggleIcon.children[1].classList.replace(isDark ? 'fa-sun' : 'fa-moon', isDark ? 'fa-moon' : 'fa-sun');
+  toggleIcon.children[0].textContent = isDarkMode ? 'Dark Mode' : 'Light Mode';
+  toggleIcon.children[1].classList.replace(isDarkMode ? 'fa-sun' : 'fa-moon', isDarkMode ? 'fa-moon' : 'fa-sun');
   updateImageMode(theme);
 }
 
 function switchTheme(event) {
-  const isDark = event.target.checked;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  localStorage.setItem('theme', isDark ? 'dark' : 'light'); // Save theme in Local Storage
-  applyThemeSettings(isDark);
+  const isDarkMode = event.target.checked;
+  document.documentElement.setAttribute('data-theme', isDarkMode ? THEME.DARK : THEME.LIGHT);
+  applyThemeSettings(isDarkMode);
+  // Save theme in local storage
+  localStorage.setItem('theme', isDarkMode ? THEME.DARK : THEME.LIGHT);
 }
 
-function loadCurrentThemefromLocalStorage() {
-  const currentTheme = localStorage.getItem('theme');
-  // Check Local Storage For Theme
-  if (currentTheme) {
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    toggleSwitch.checked = currentTheme === 'dark';
-    applyThemeSettings({isDark: currentTheme === 'dark'});
+function loadThemeFromStorage() {
+  const savedTheme = localStorage.getItem('theme');
+  const isDarkMode = savedTheme === THEME.DARK;
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    toggleSwitch.checked = isDarkMode;
+    applyThemeSettings(isDarkMode);
   }
 }
 
-// Event Listener
-toggleSwitch.onchange = switchTheme;
-window.onload = loadCurrentThemefromLocalStorage;
+// Event Listeners
+toggleSwitch.addEventListener('change', switchTheme);
+window.addEventListener('load', loadThemeFromStorage);
