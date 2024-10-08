@@ -21,12 +21,12 @@ const MODE_TEXT = {
 
 const BG_COLORS = {
   [THEME.DARK]: {
-    navBg: 'rgb(0 0 0 / 50%)',
-    textBoxBg: 'rgb(255 255 255 / 50%)',
+    navBgColor: 'rgb(0 0 0 / 50%)',
+    textBoxBgColor: 'rgb(255 255 255 / 50%)',
   },
   [THEME.LIGHT]: {
-    navBg: 'rgb(255 255 255 / 50%)',
-    textBoxBg: 'rgb(0 0 0 / 50%)',
+    navBgColor: 'rgb(255 255 255 / 50%)',
+    textBoxBgColor: 'rgb(0 0 0 / 50%)',
   }
 };
 
