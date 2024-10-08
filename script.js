@@ -1,54 +1,54 @@
+// GUI Elements
 const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-const nav = document.getElementById('nav');
 const toggleIcon = document.getElementById('toggle-icon');
-const image1 = document.getElementById('image1');
-const image2 = document.getElementById('image2');
-const image3 = document.getElementById('image3');
+const nav = document.getElementById('nav');
 const textBox = document.getElementById('text-box');
+const imageElements = document.querySelectorAll('.about-container img');
 
-// Dark or Light Images
-function imageMode(color) {
-  image1.src = `img/undraw_proud_coder_${color}.svg`
-  image2.src = `img/undraw_feeling_proud_${color}.svg`
-  image3.src = `img/undraw_conceptual_idea_${color}.svg`
+// Color constants for dark and light mode
+const BG_COLORS = {
+  dark: {
+    navBg: 'rgb(0 0 0 / 50%)',
+    textBoxBg: 'rgb(255 255 255 / 50%)',
+  },
+  light: {
+    navBg: 'rgb(255 255 255 / 50%)',
+    textBoxBg: 'rgb(0 0 0 / 50%)',
+  }
+};
+
+function updateImageMode(theme) {
+  imageElements.forEach((img) => {
+    img.src = `img/undraw_${img.id}_${theme}.svg`;
+  });
 }
 
-function toggleDarkLightMode({isDark = true}) {
-  nav.style.backgroundColor = isDark ? 'rgb(0 0 0 / 50%)' : 'rgb(255 255 255 / 50%)';
-  textBox.style.backgroundColor = isDark ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0 / 50%)';
+function applyThemeSettings({isDark = false}) {
+  const theme = isDark ? 'dark' : 'light';
+  nav.style.backgroundColor = BG_COLORS[theme].navBg;
+  textBox.style.backgroundColor = BG_COLORS[theme].textBoxBg;
   toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
-  isDark 
-    ? toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon') 
-    : toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
-  isDark 
-    ? imageMode('dark')
-    : imageMode('light');
+  toggleIcon.children[1].classList.replace(isDark ? 'fa-sun' : 'fa-moon', isDark ? 'fa-moon' : 'fa-sun');
+  updateImageMode(theme);
 }
 
-// Switch Theme Dynamically
 function switchTheme(event) {
-  if (event.target.checked) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-    toggleDarkLightMode({isDark: true});
-  } else {
-    document.documentElement.setAttribute('data-theme', 'light');
-    localStorage.setItem('theme', 'light');
-    toggleDarkLightMode({isDark: false});
+  const isDark = event.target.checked;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light'); // Save theme in Local Storage
+  applyThemeSettings(isDark);
+}
+
+function loadCurrentThemefromLocalStorage() {
+  const currentTheme = localStorage.getItem('theme');
+  // Check Local Storage For Theme
+  if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    toggleSwitch.checked = currentTheme === 'dark';
+    applyThemeSettings({isDark: currentTheme === 'dark'});
   }
 }
 
 // Event Listener
-toggleSwitch.addEventListener('change', switchTheme);
-
-// Check Local Storage For Theme
-const currentTheme = localStorage.getItem('theme');
-
-if (currentTheme) {
-  document.documentElement.setAttribute('data-theme', currentTheme);
-
-  if (currentTheme === 'dark') {
-    toggleSwitch.checked = true;
-    toggleDarkLightMode({isDark: true});
-  }
-}
+toggleSwitch.onchange = switchTheme;
+window.onload = loadCurrentThemefromLocalStorage;
