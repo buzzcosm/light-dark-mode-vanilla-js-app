@@ -9,48 +9,61 @@ const THEME = {
   LIGHT: 'light'
 };
 
+const ICON_CLASS = {
+  DARK: 'fa-moon',
+  LIGHT: 'fa-sun'
+};
+
 const BG_COLORS = {
-  dark: {
+  [THEME.DARK]: {
     navBg: 'rgb(0 0 0 / 50%)',
     textBoxBg: 'rgb(255 255 255 / 50%)',
   },
-  light: {
+  [THEME.LIGHT]: {
     navBg: 'rgb(255 255 255 / 50%)',
     textBoxBg: 'rgb(0 0 0 / 50%)',
   }
 };
 
+// Update images based on the current theme
 function updateImageMode(theme) {
   imageElements.forEach((img) => {
     img.src = `img/undraw_${img.id}_${theme}.svg`;
   });
 }
 
+// Apply theme settings to the page
 function applyThemeSettings(isDarkMode = false) {
   const theme = isDarkMode ? THEME.DARK : THEME.LIGHT;
-  nav.style.backgroundColor = BG_COLORS[theme].navBg;
-  textBox.style.backgroundColor = BG_COLORS[theme].textBoxBg;
+  const { navBg, textBoxBg } = BG_COLORS[theme];
+
+  nav.style.backgroundColor = navBg;
+  textBox.style.backgroundColor = textBoxBg;
   toggleIcon.children[0].textContent = isDarkMode ? 'Dark Mode' : 'Light Mode';
-  toggleIcon.children[1].classList.replace(isDarkMode ? 'fa-sun' : 'fa-moon', isDarkMode ? 'fa-moon' : 'fa-sun');
+  toggleIcon.children[1].classList.replace(
+    isDarkMode ? ICON_CLASS.LIGHT : ICON_CLASS.DARK,
+    isDarkMode ? ICON_CLASS.DARK : ICON_CLASS.LIGHT
+  );
+
   updateImageMode(theme);
 }
 
+// Toggle theme based on switch state
 function switchTheme(event) {
   const isDarkMode = event.target.checked;
   document.documentElement.setAttribute('data-theme', isDarkMode ? THEME.DARK : THEME.LIGHT);
   applyThemeSettings(isDarkMode);
-  // Save theme in local storage
-  localStorage.setItem('theme', isDarkMode ? THEME.DARK : THEME.LIGHT);
+  localStorage.setItem('theme', isDarkMode ? THEME.DARK : THEME.LIGHT); // Save theme in local storage
 }
 
 function loadThemeFromStorage() {
   const savedTheme = localStorage.getItem('theme');
+  if (!savedTheme) return; // Early return if no theme is saved
+
   const isDarkMode = savedTheme === THEME.DARK;
-  if (savedTheme) {
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    toggleSwitch.checked = isDarkMode;
-    applyThemeSettings(isDarkMode);
-  }
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  toggleSwitch.checked = isDarkMode;
+  applyThemeSettings(isDarkMode);
 }
 
 // Event Listeners
