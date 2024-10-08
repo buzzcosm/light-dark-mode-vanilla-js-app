@@ -9,6 +9,11 @@ Exercise Project of `ZTM` Cours on Udemy ([JavaScript Web Projects: 20 Projects 
 > [!NOTE]
 > Style is **non-responsive**
 
+## Examples
+
+![Light Mode](docs/img/example_light_mode.png "Light Mode Screenshot")
+![Dark Mode](docs/img/example_dark_mode.png "Dark Mode Screenshot")
+
 ## Useful references
 
 - [The Ultimate Guide on Designing a Dark Theme for your Android app](https://blog.prototypr.io/how-to-design-a-dark-theme-for-your-android-app-3daeb264637)
