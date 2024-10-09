@@ -25,3 +25,4 @@ Exercise Project of `ZTM` Cours on Udemy ([JavaScript Web Projects: 20 Projects 
 - [Document: documentElement property](https://developer.mozilla.org/en-US/docs/Web/API/Document/documentElement)
 - [w3schools: Window localStorage](https://www.w3schools.com/jsref/prop_win_localstorage.asp)
 - [Window: localStorage property](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+- [Hero Patterns: A collection of repeatable SVG background patterns](https://heropatterns.com/)
